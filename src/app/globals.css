@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   /* Nawano Inventory UI Kit Theme */
   --nawano-dark-200: #343664;

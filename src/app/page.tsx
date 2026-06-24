@@ -1,118 +1,52 @@
-import styles from "./page.module.css";
-import { Sun, ChevronDown, Layers, AlertCircle, ArrowRightLeft, Clock, Activity, ChevronRight } from "lucide-react";
+import { prisma } from "@/lib/prisma";
+import FridgeDisplay, { ProductData } from "@/components/hero/FridgeDisplay";
 
-export default function Dashboard() {
+export const dynamic = "force-dynamic";
+
+export default async function Dashboard() {
+  // Fetch products with their inventory count
+  const dbProducts = await prisma.product.findMany({
+    include: {
+      Inventory: true,
+    },
+    take: 20, // Limit to what fits in the fridge nicely
+  });
+
+  // Map to the required structure for the Fridge Display
+  // including some simulated mock fields (used30Days, supplier) that aren't in this basic schema yet
+  const products: ProductData[] = dbProducts.map((p) => ({
+    id: p.id,
+    name: p.name,
+    category: p.category,
+    costPrice: p.costPrice,
+    sellingPrice: p.sellingPrice,
+    minimumStock: p.minimumStock,
+    bottleSizeMl: p.bottleSizeMl,
+    Inventory: p.Inventory ? {
+      fullBottles: p.Inventory.fullBottles,
+      openBottleMl: p.Inventory.openBottleMl,
+    } : null,
+    used30Days: Math.floor(Math.random() * 20), // Placeholder for demo realism
+    supplier: "Benchmark Beverages",
+  }));
+
+  // If there are no products, provide dummy data to show the beautiful UI empty state
+  if (products.length === 0) {
+    const dummyProducts: ProductData[] = [
+      { id: "1", name: "Tito's Handmade Vodka", category: "Vodka", costPrice: 19.5, sellingPrice: 32, minimumStock: 10, bottleSizeMl: 750, Inventory: { fullBottles: 18, openBottleMl: 0 }, used30Days: 7, supplier: "Benchmark Beverages" },
+      { id: "2", name: "Ciroc Vodka", category: "Vodka", costPrice: 25.0, sellingPrice: 45, minimumStock: 5, bottleSizeMl: 750, Inventory: { fullBottles: 12, openBottleMl: 0 }, used30Days: 4, supplier: "Diageo" },
+      { id: "3", name: "Gordons Gin", category: "Gin", costPrice: 15.0, sellingPrice: 25, minimumStock: 12, bottleSizeMl: 750, Inventory: { fullBottles: 5, openBottleMl: 0 }, used30Days: 14, supplier: "Diageo" },
+      { id: "4", name: "Moet & Chandon", category: "Champagne", costPrice: 45.0, sellingPrice: 120, minimumStock: 6, bottleSizeMl: 750, Inventory: { fullBottles: 2, openBottleMl: 0 }, used30Days: 8, supplier: "LVMH" },
+      { id: "5", name: "Hendricks Gin", category: "Gin", costPrice: 28.0, sellingPrice: 50, minimumStock: 8, bottleSizeMl: 750, Inventory: { fullBottles: 14, openBottleMl: 0 }, used30Days: 6, supplier: "William Grant" },
+      { id: "6", name: "Don Julio Tequila", category: "Tequila", costPrice: 35.0, sellingPrice: 65, minimumStock: 5, bottleSizeMl: 750, Inventory: { fullBottles: 9, openBottleMl: 0 }, used30Days: 12, supplier: "Diageo" },
+      { id: "7", name: "Jameson Whiskey", category: "Whiskey", costPrice: 22.0, sellingPrice: 38, minimumStock: 15, bottleSizeMl: 750, Inventory: { fullBottles: 24, openBottleMl: 0 }, used30Days: 18, supplier: "Pernod Ricard" },
+    ];
+    products.push(...dummyProducts);
+  }
+
   return (
-    <div className={styles.dashboard}>
-      <header className={styles.header}>
-        <div className={styles.dateSelector}>
-          <Sun size={14} className={styles.iconGray} />
-          <span>Wed, 13 Apr 23</span>
-          <ChevronDown size={14} className={styles.iconGray} />
-        </div>
-        <h1>Welcome, Anthony!</h1>
-      </header>
-
-      <div className={styles.heroCard}>
-        <div className={styles.heroTop}>
-          <div className={styles.heroIconBg}>
-            <Layers size={18} color="white" />
-          </div>
-          <h2>Inventory Summary</h2>
-        </div>
-        
-        <div className={styles.heroGrid}>
-          <div className={styles.heroStat}>
-            <span className={styles.heroStatLabel}>Category Items</span>
-            <span className={styles.heroStatValue}>24</span>
-          </div>
-          <div className={styles.heroStat}>
-            <span className={styles.heroStatLabel}>Folders</span>
-            <span className={styles.heroStatValue}>15</span>
-          </div>
-          <div className={styles.heroStat}>
-            <span className={styles.heroStatLabel}>Total Qty</span>
-            <span className={styles.heroStatValue}>479 Items</span>
-          </div>
-          <div className={styles.heroStat}>
-            <span className={styles.heroStatLabel}>Total Value</span>
-            <span className={styles.heroStatValue}>$1,067.50</span>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.gridSection}>
-        <div className={styles.actionCard}>
-          <div className={styles.cardHeader}>
-            <div className={styles.cardIcon}>
-              <AlertCircle size={20} color="var(--nawano-dark-200)" />
-            </div>
-            <span className={styles.newBadge}>New</span>
-          </div>
-          <div className={styles.cardBody}>
-            <h3>Low Stock</h3>
-            <p>All stock items that are low inventory</p>
-            <strong>18 Items</strong>
-          </div>
-        </div>
-
-        <div className={styles.actionCard}>
-          <div className={styles.cardHeader}>
-            <div className={styles.cardIcon}>
-              <ArrowRightLeft size={20} color="var(--nawano-dark-200)" />
-            </div>
-            <span className={styles.newBadge}>New</span>
-          </div>
-          <div className={styles.cardBody}>
-            <h3>Move Su..</h3>
-            <p>Track inventory that has moved locations</p>
-            <strong>8 Orders</strong>
-          </div>
-        </div>
-
-        <div className={styles.actionCard}>
-          <div className={styles.cardHeader}>
-            <div className={styles.cardIcon}>
-              <Clock size={20} color="var(--nawano-dark-200)" />
-            </div>
-          </div>
-          <div className={styles.cardBody}>
-            <h3>Upcoming..</h3>
-            <p>Items in inventory are set to expire soon</p>
-            <strong>4 Items</strong>
-          </div>
-        </div>
-
-        <div className={styles.actionCard}>
-          <div className={styles.cardHeader}>
-            <div className={styles.cardIcon}>
-              <Activity size={20} color="var(--nawano-dark-200)" />
-            </div>
-          </div>
-          <div className={styles.cardBody}>
-            <h3>Qty Chan..</h3>
-            <p>All inflows and outflows for an item</p>
-            <strong>32 Items</strong>
-          </div>
-        </div>
-      </div>
-
-      <div className={styles.filterPills}>
-        <button className={styles.pillInactive}>All Activ..</button>
-        <button className={styles.pillActive}>Incomin..</button>
-        <button className={styles.pillInactive}>Inboun..</button>
-        <button className={styles.pillInactive}>Out..</button>
-      </div>
-
-      <section className={styles.listSection}>
-        <div className={styles.listHeader}>
-          <h3>Incoming Goods Req (4)</h3>
-          <button className={styles.viewAllBtn}>
-            View all <ChevronRight size={14} />
-          </button>
-        </div>
-        {/* Placeholder for list items */}
-      </section>
-    </div>
+    <main className="w-full bg-[#0a0a0c] min-h-screen">
+      <FridgeDisplay products={products} />
+    </main>
   );
 }
