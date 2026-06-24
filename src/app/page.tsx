@@ -28,6 +28,20 @@ export default function Dashboard() {
       {/* Right Column: Workflow Widgets */}
       <div className="w-full xl:w-[450px] flex-shrink-0 flex flex-col gap-6 h-full overflow-y-auto custom-scrollbar pr-2 pb-10">
         
+        {/* WhatsApp Shift Report Generator */}
+        <button 
+          onClick={() => {
+            const report = `*End of Shift Report - StockMan*%0A*Manager:* Pedro Silva%0A*Time:* 18:00%0A%0A*Sales Highlight:*%0A- 3x Ciroc Vodka%0A- 5x Jameson%0A%0A*Low Stock Alert 🚨*%0A- Jack Daniel's (4 left)%0A- Dom Pérignon (2 left)%0A%0A*Action Needed:*%0A5 Purchase Orders pending generation.`;
+            window.open(`https://wa.me/?text=${report}`, '_blank');
+          }}
+          className="w-full bg-[#1C1C1C] hover:bg-[#2A2A2A] border border-[#25D366]/30 hover:border-[#25D366] rounded-2xl p-4 flex items-center justify-center gap-3 transition-colors shadow-lg shadow-[#25D366]/5 group"
+        >
+          <div className="w-8 h-8 bg-[#25D366]/10 rounded-full flex items-center justify-center text-[#25D366] group-hover:scale-110 transition-transform">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="css-i6dzq1"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+          </div>
+          <span className="text-[#F3F4F6] font-bold text-sm">Generate WhatsApp Shift Report</span>
+        </button>
+        
         {/* Widget: Stock Take Command Center */}
         <div className="bg-[#1C1C1C] border border-[#2A2A2A] rounded-2xl p-5 shadow-lg relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-1 bg-[#DDAA33]"></div>
