@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import BottomNav from "@/components/BottomNav";
-
+import Sidebar from "@/components/layout/Sidebar";
+import TopBar from "@/components/layout/TopBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,10 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "StockBru",
-  description: "Smart inventory management platform",
-  manifest: "/manifest.json",
-  themeColor: "#3B82F6",
+  title: "StockBru | Beverage Inventory Intelligence",
+  description: "Executive Business Intelligence Platform for Nightclub Inventory",
 };
 
 export default function RootLayout({
@@ -28,11 +26,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>
-        <main className="container">
-          {children}
-        </main>
-        <BottomNav />
+      <body className="bg-[var(--bg-main)] text-[var(--text-primary)] flex w-full min-h-screen overflow-hidden">
+        <Sidebar />
+        <div className="flex-1 flex flex-col h-screen overflow-hidden relative">
+          <TopBar />
+          <main className="flex-1 overflow-y-auto custom-scrollbar bg-[#0B0F14]">
+            {children}
+          </main>
+        </div>
       </body>
     </html>
   );
