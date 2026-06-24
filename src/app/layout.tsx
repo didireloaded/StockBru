@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "StockBru | Beverage Inventory Intelligence",
+  title: "StockMan | Beverage Inventory Intelligence",
   description: "Executive Business Intelligence Platform for Nightclub Inventory",
 };
 

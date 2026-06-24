@@ -13,7 +13,7 @@ import {
   Receipt,
   FileBarChart,
   LineChart,
-  Bot,
+  MessageSquare,
   Settings,
   Bell
 } from "lucide-react";
@@ -33,7 +33,7 @@ export default function Sidebar() {
     { name: "Purchase Orders", href: "/purchase-orders", icon: Receipt },
     { name: "Reports", href: "/reports", icon: FileBarChart },
     { name: "Analytics", href: "/analytics", icon: LineChart },
-    { name: "AI Assistant", href: "/ai", icon: Bot },
+    { name: "Chat", href: "/chat", icon: MessageSquare },
   ];
 
   return (
@@ -43,7 +43,7 @@ export default function Sidebar() {
           <div className="w-6 h-6 rounded-md border-2 border-[#DDAA33] flex items-center justify-center">
             <div className="w-2 h-2 bg-[#DDAA33] rounded-sm"></div>
           </div>
-          STOCKBRU <span className="text-[#DDAA33] text-sm mt-0.5">AI</span>
+          StockMan
         </h1>
       </div>
 
