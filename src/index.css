@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold: #d4a24c;
+  --color-gold-light: #e9c27a;
+  --color-gold-dark: #8a6520;
+  --color-bg: #0b0b0e;
+  --color-surface: #141418;
+  --color-surface-2: #1a1a20;
+  --color-border: #26262d;
+  --color-emerald: #4ade80;
+  --color-red: #ef4444;
+  --color-amber: #f59e0b;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body, #root {
+  height: 100%;
+  background: #0b0b0e;
+  color: #e8e8ea;
+  font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  background-image:
+    radial-gradient(circle at 10% 0%, rgba(212, 162, 76, 0.06), transparent 40%),
+    radial-gradient(circle at 90% 10%, rgba(212, 162, 76, 0.04), transparent 40%);
+  background-attachment: fixed;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px; height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: #2a2a32; border-radius: 3px; }
+.scrollbar-thin::-webkit-scrollbar-thumb:hover { background: #3a3a44; }
+
+.glass-card {
+  background: linear-gradient(180deg, #16161b 0%, #121217 100%);
+  border: 1px solid #24242b;
+  border-radius: 14px;
+}
+
+.gold-gradient-text {
+  background: linear-gradient(180deg, #f0d08a 0%, #d4a24c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.kpi-value {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.03em;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.pulse-dot { animation: pulse-dot 2s infinite; }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(212,162,76,0.08), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+.bottle-card {
+  transition: all 0.2s ease;
+  border: 1px solid #222229;
+  background: linear-gradient(180deg, #18181d 0%, #131317 100%);
+}
+.bottle-card:hover {
+  border-color: #d4a24c;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(212, 162, 76, 0.15);
+}
+
+.timeline-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #d4a24c;
+  box-shadow: 0 0 0 4px rgba(212,162,76,0.15);
+}
+
+.activity-row {
+  transition: background 0.15s ease;
+}
+.activity-row:hover {
+  background: rgba(212,162,76,0.04);
+}
+
+.nav-link {
+  position: relative;
+  transition: all 0.15s ease;
+}
+.nav-link.active {
+  background: linear-gradient(90deg, rgba(212,162,76,0.15) 0%, rgba(212,162,76,0.04) 100%);
+  color: #e9c27a;
+}
+.nav-link.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 6px; bottom: 6px;
+  width: 3px;
+  background: #d4a24c;
+  border-radius: 0 3px 3px 0;
+}
+
+.status-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  display: inline-block;
+}
