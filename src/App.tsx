@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import {
   LayoutDashboard, Refrigerator, Boxes, ClipboardList, ShoppingCart,
   Clock, Truck, FileText, BarChart3, Activity, Bot, Bell, Settings,
@@ -186,12 +186,12 @@ export default function App() {
   }, [bottles, movements, totalValue]);
 
   // ─── Actions ───
-  const logActivity = (a: Omit<ActivityItem, 'id' | 'time'>) => {
+  const logActivity = useCallback((a: Omit<ActivityItem, 'id' | 'time'>) => {
     setActivities(prev => [{ ...a, id: Date.now() + Math.random(), time: new Date().toISOString() }, ...prev]);
     setUnreadCount(c => c + 1);
-  };
+  }, []);
 
-  const handleBottleAction = (id: number, type: 'IN' | 'OUT' | 'OPEN') => {
+  const handleBottleAction = useCallback((id: number, type: 'IN' | 'OUT' | 'OPEN') => {
     const b = bottles.find(x => x.id === id);
     if (!b) return;
     if (type === 'OUT' && b.quantity <= 0) { toast.error('Out of stock!'); return; }
@@ -219,18 +219,18 @@ export default function App() {
       user: 'Pedro Manager'
     });
     toast.success(`${b.name} updated`);
-  };
+  }, [bottles, logActivity]);
 
-  const clearAllData = () => {
+  const clearAllData = useCallback(() => {
     clearAllStorage();
     setBottles(BOTTLES_SEED); setActivities(ACTIVITIES_SEED); setSales([]); setPOs([]);
     setStocktakes([]); setShifts([]); setSuppliers(SUPPLIERS_SEED); setSnapshots([]);
     setMovements(MOVEMENTS_SEED); setTransfers([]); setUnreadCount(0);
     setShowResetConfirm(false);
     toast.info('Data reset to demo defaults');
-  };
+  }, []);
 
-  const WORKSPACES = ['All Locations', 'Main Fridge', 'VIP Fridge', 'Storeroom', 'Cold Room', 'Display Shelf', 'Main Bar'];
+  const WORKSPACES = useMemo(() => ['All Locations', 'Main Fridge', 'VIP Fridge', 'Storeroom', 'Cold Room', 'Display Shelf', 'Main Bar'], []);
 
   if (viewingBottleId !== null && activeNav === PRODUCT_DETAIL_NAV) {
     return (
