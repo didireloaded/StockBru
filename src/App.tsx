@@ -4,7 +4,7 @@ import {
   Clock, Truck, FileText, BarChart3, Activity, Bot, Bell, Settings,
   Search, ChevronDown, Package, AlertTriangle, TrendingUp, TrendingDown,
   Wine, Sparkles, CheckCircle2, Droplets, Star, Camera, ArrowLeftRight,
-  Globe, MapPin, Command, X, Search as SearchIcon
+  Globe, MapPin, Command, X, Search as SearchIcon, Radio
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -30,6 +30,8 @@ import ProductDetail from './pages/ProductDetail';
 import OpenBottles from './pages/OpenBottles';
 import Snapshots from './pages/Snapshots';
 import { ArtistOpsCenter } from './pages/ArtistOpsCenter';
+import { LiveOpsBoard } from './pages/LiveOpsBoard';
+import { NightclubFlagshipSuite } from './components/ops/NightclubFlagshipSuite';
 import SettingsPage from './pages/SettingsPage';
 import { Button, Modal } from './components/Primitives';
 import { BottleIcon } from './components/BottleIcon';
@@ -44,6 +46,7 @@ import { DEMO_SCENARIOS, DemoScenarioType, getEnterpriseCatalog, generateScenari
 
 const NAV_ITEMS = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+  { id: 'liveboard', label: 'Live Ops Board', icon: Radio },
   { id: 'events', label: 'Artist Ops Center', icon: Sparkles },
   { id: 'fridge', label: 'Smart Fridge', icon: Refrigerator },
   { id: 'inventory', label: 'Inventory', icon: Boxes },
@@ -356,6 +359,7 @@ export default function App() {
             >
               {activeNav === 'overview' && (
                 <div className="space-y-5">
+                  <NightclubFlagshipSuite onOpenLiveBoard={() => { setActiveNav('liveboard'); setViewingBottleId(null); }} />
                   {/* KPIs */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
                     <KpiCard label="Inventory Value" value={`N$ ${totalValue.toLocaleString()}`} change={`${scopedBottles.length} SKUs in ${workspace}`} icon={Package} />
@@ -533,6 +537,7 @@ export default function App() {
               {activeNav === 'reports' && <Reports bottles={bottles} sales={sales} pos={pos} stocktakes={stocktakes} />}
               {activeNav === 'ai' && <AIAssistant bottles={bottles} logActivity={logActivity} />}
               {activeNav === 'events' && <ArtistOpsCenter bottles={bottles} pos={pos} setPOs={setPOs} />}
+              {activeNav === 'liveboard' && <LiveOpsBoard bottles={bottles} />}
               {activeNav === 'settings' && <SettingsPage />}
             </motion.div>
           </AnimatePresence>
