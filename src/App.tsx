@@ -40,6 +40,7 @@ import { MobileBottomNav } from './components/MobileBottomNav';
 import { MobileFAB } from './components/MobileFAB';
 import { HandheldKeypad } from './components/HandheldKeypad';
 import { SyncBanner } from './components/SyncBanner';
+import { DEMO_SCENARIOS, DemoScenarioType, getEnterpriseCatalog, generateScenarioLedger } from './services/scenario.service';
 
 const NAV_ITEMS = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -82,6 +83,7 @@ export default function App() {
   const [showWalkthrough, setShowWalkthrough] = useState(false);
   const [currentUser, setCurrentUser] = useState({ name: 'Pedro Manager', role: 'Manager', company: 'StockBru Hospitality Group', branch: 'Main Bar & VIP Lounge' });
   const [unreadCount, setUnreadCount] = useState(() => loadFromStorage('stockbru-unread-count', 0));
+  const [demoScenario, setDemoScenarioState] = useState<DemoScenarioType>(() => loadFromStorage('stockbru-demo-scenario', 'busy_friday'));
 
   // ─── Persisted state ───
   const [bottles, setBottles] = useState<Bottle[]>(() => loadFromStorage(STORAGE_KEYS.BOTTLES, BOTTLES_SEED));
@@ -230,6 +232,18 @@ export default function App() {
     toast.info('Data reset to demo defaults');
   }, []);
 
+  const handleSwitchScenario = useCallback((s: DemoScenarioType) => {
+    saveToStorage('stockbru-demo-scenario', s);
+    setDemoScenarioState(s);
+    const newCatalog = getEnterpriseCatalog(s);
+    const newLedger = generateScenarioLedger(newCatalog, s);
+    setBottles(newCatalog);
+    setMovements(newLedger.movements);
+    setActivities(newLedger.activities);
+    setSales(newLedger.sales);
+    toast.success(`Switched to scenario: ${DEMO_SCENARIOS[s].label}`);
+  }, []);
+
   const WORKSPACES = useMemo(() => ['All Locations', 'Main Fridge', 'VIP Fridge', 'Storeroom', 'Cold Room', 'Display Shelf', 'Main Bar'], []);
 
   if (viewingBottleId !== null && activeNav === PRODUCT_DETAIL_NAV) {
@@ -291,17 +305,30 @@ export default function App() {
       <main className="flex-1 min-w-0 pb-16 md:pb-0">
         <SyncBanner />
         <header className="h-16 border-b border-[#1d1d24] bg-[#0d0d11]/80 backdrop-blur px-6 flex items-center justify-between sticky top-0 z-20">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <div className="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-[#141419] border border-[#262632] shadow-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               <span className="text-xs font-mono font-bold text-[#d4a24c] uppercase tracking-wider">
                 {(currentUser as any).workArea || 'Main Bar'}
               </span>
               <span className="text-slate-600">•</span>
-              <span className="text-xs text-slate-300 font-semibold truncate max-w-[220px]">
-                {(currentUser as any).event || 'Friday Night Sessions'}
+              <span className="text-xs text-slate-300 font-semibold truncate max-w-[180px]">
+                {(currentUser as any).event || DEMO_SCENARIOS[demoScenario].activeEvent}
               </span>
             </div>
+
+            <select
+              value={demoScenario}
+              onChange={(e) => handleSwitchScenario(e.target.value as DemoScenarioType)}
+              className="bg-[#181822] border border-[#d4a24c]/40 hover:border-[#d4a24c] text-[#d4a24c] text-xs font-bold rounded-xl px-3 py-2 cursor-pointer transition-all outline-none shadow-sm font-mono"
+              title="Switch Nightclub Operating Demo Scenario"
+            >
+              {Object.values(DEMO_SCENARIOS).map(sc => (
+                <option key={sc.id} value={sc.id} className="bg-[#111116] text-white font-sans">
+                  🌟 Scenario: {sc.label}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="flex items-center gap-3">
             <div className="relative group cursor-pointer" onClick={() => setShowCommandPalette(true)}>
