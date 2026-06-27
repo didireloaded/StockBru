@@ -5,15 +5,20 @@
 
 BEGIN;
 
+ALTER TABLE public.suppliers 
+    ADD COLUMN IF NOT EXISTS contact_person TEXT, 
+    ADD COLUMN IF NOT EXISTS email TEXT, 
+    ADD COLUMN IF NOT EXISTS phone TEXT;
+
 -- 1. Insert Authentic Nightclub Suppliers (Namibia & Southern Africa)
-INSERT INTO public.suppliers (tenant_id, name, contact_person, email, phone, payment_terms)
+INSERT INTO public.suppliers (id, name, contact_person, email, phone)
 VALUES
-    ('00000000-0000-0000-0000-000000000001', 'NamBev Beverage Corporation', 'Johan Van Der Merwe', 'orders@nambev.com.na', '+264 61 299 1111', '30 Days'),
-    ('00000000-0000-0000-0000-000000000001', 'Diageo Southern Africa', 'Sipho Dlamini', 'hospitality@diageo.com', '+27 11 987 6543', '14 Days'),
-    ('00000000-0000-0000-0000-000000000001', 'Pernod Ricard Hospitality', 'Claire Dupont', 'orders@pernod-ricard.com', '+27 21 444 8888', '30 Days'),
-    ('00000000-0000-0000-0000-000000000001', 'Distell Group Limited', 'Hendrik Smit', 'supply@distell.co.za', '+27 21 808 3911', '30 Days'),
-    ('00000000-0000-0000-0000-000000000001', 'Heineken Namibia Beverages', 'Markus Bauer', 'dispatch@heineken.na', '+264 61 333 5555', 'COD')
-ON CONFLICT DO NOTHING;
+    (1001, 'NamBev Beverage Corporation', 'Johan Van Der Merwe', 'orders@nambev.com.na', '+264 61 299 1111'),
+    (1002, 'Diageo Southern Africa', 'Sipho Dlamini', 'hospitality@diageo.com', '+27 11 987 6543'),
+    (1003, 'Pernod Ricard Hospitality', 'Claire Dupont', 'orders@pernod-ricard.com', '+27 21 444 8888'),
+    (1004, 'Distell Group Limited', 'Hendrik Smit', 'supply@distell.co.za', '+27 21 808 3911'),
+    (1005, 'Heineken Namibia Beverages', 'Markus Bauer', 'dispatch@heineken.na', '+264 61 333 5555')
+ON CONFLICT (id) DO NOTHING;
 
 -- 2. Create Demo Scenario Configurations Table
 CREATE TABLE IF NOT EXISTS public.demo_scenarios (
