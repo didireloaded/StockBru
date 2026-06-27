@@ -29,7 +29,7 @@ import AIAssistant from './pages/AIAssistant';
 import ProductDetail from './pages/ProductDetail';
 import OpenBottles from './pages/OpenBottles';
 import Snapshots from './pages/Snapshots';
-import Events from './pages/Events';
+import { ArtistOpsCenter } from './pages/ArtistOpsCenter';
 import SettingsPage from './pages/SettingsPage';
 import { Button, Modal } from './components/Primitives';
 import { BottleIcon } from './components/BottleIcon';
@@ -44,7 +44,7 @@ import { DEMO_SCENARIOS, DemoScenarioType, getEnterpriseCatalog, generateScenari
 
 const NAV_ITEMS = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-  { id: 'events', label: 'Events Hub', icon: Sparkles },
+  { id: 'events', label: 'Artist Ops Center', icon: Sparkles },
   { id: 'fridge', label: 'Smart Fridge', icon: Refrigerator },
   { id: 'inventory', label: 'Inventory', icon: Boxes },
   { id: 'open-bottles', label: 'Open Bottles', icon: Droplets },
@@ -532,7 +532,7 @@ export default function App() {
               {activeNav === 'intelligence' && <Snapshots bottles={bottles} setBottles={setBottles} snapshots={snapshots} setSnapshots={setSnapshots} movements={movements} setMovements={setMovements} transfers={transfers} setTransfers={setTransfers} logActivity={logActivity} />}
               {activeNav === 'reports' && <Reports bottles={bottles} sales={sales} pos={pos} stocktakes={stocktakes} />}
               {activeNav === 'ai' && <AIAssistant bottles={bottles} logActivity={logActivity} />}
-              {activeNav === 'events' && <Events bottles={bottles} sales={sales} movements={movements} />}
+              {activeNav === 'events' && <ArtistOpsCenter bottles={bottles} pos={pos} setPOs={setPOs} />}
               {activeNav === 'settings' && <SettingsPage />}
             </motion.div>
           </AnimatePresence>
