@@ -9,6 +9,8 @@ export interface Bottle {
   name: string;
   sku: string;
   barcode?: string;
+  imageUrl?: string;
+  thumbnailUrl?: string;
   category: 'Spirits' | 'Beer' | 'Wine & Champagne' | 'Mixers & Others' | 'Non-Alcoholic';
   quantity: number;
   openBottles?: number;

@@ -32,6 +32,7 @@ import Snapshots from './pages/Snapshots';
 import { ArtistOpsCenter } from './pages/ArtistOpsCenter';
 import { LiveOpsBoard } from './pages/LiveOpsBoard';
 import { NightclubFlagshipSuite } from './components/ops/NightclubFlagshipSuite';
+import { UltimateCommandCenterBar } from './components/ops/UltimateCommandCenterBar';
 import SettingsPage from './pages/SettingsPage';
 import { Button, Modal } from './components/Primitives';
 import { BottleIcon } from './components/BottleIcon';
@@ -359,6 +360,7 @@ export default function App() {
             >
               {activeNav === 'overview' && (
                 <div className="space-y-5">
+                  <UltimateCommandCenterBar bottles={bottles} />
                   <NightclubFlagshipSuite onOpenLiveBoard={() => { setActiveNav('liveboard'); setViewingBottleId(null); }} />
                   {/* KPIs */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
